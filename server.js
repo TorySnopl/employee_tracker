@@ -3,7 +3,7 @@ const fs = require('fs');
 const inq = require('inquirer');
 const mysql = require('mysql2');
 
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Express middleware
@@ -18,7 +18,7 @@ app.listen(PORT, () => {
 // Connect to database
 const db = mysql.createConnection(
   {
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: 'timberswin',
     database: 'employees_db'
@@ -52,22 +52,15 @@ db.connect((err) => {
       ],
       name: 'choice',
     },
-  ]);
-
-  switch (userChoice.choice) {
+  ])
+  .then(({choice})=>{
+console.log(choice)
+  switch (choice) {
     case 'View All Employees':
-      if (db.state === 'Authenticated'){
       db.query('SELECT * FROM employee', function(err,results){
-        if (err){
-          console.error('Error: '+err);
-        } else {
-          console.log (results);
-        }
+      console.log (results);
         showDb();
       });
-    } else {
-      console.error('Database connection is not good');
-    }
       break;
     case 'Add an Employee':
       console.log('Added an employee');
@@ -78,16 +71,20 @@ db.connect((err) => {
       showDb();
       break;
     case 'View all Roles':
-      console.log('Viewed all roles');
-      showDb();
+      db.query('SELECT * FROM job', function(err,results){
+        console.log(results);
+        showDb()
+      });
       break;
     case 'Add Role':
       console.log('Added a role');
       showDb();
       break;
     case 'View all Departments':
-      console.log('Viewed all departments');
-      showDb();
+      db.query('SELECT * FROM department', function(err,results){
+        console.log(results);
+        showDb()
+      });
       break;
     case 'Add Department':
       console.log('Added a department');
@@ -96,6 +93,8 @@ db.connect((err) => {
   }
 
   
-}
+});
+
+  }
 
 showDb();
