@@ -87,15 +87,16 @@ console.log(choice)
           choices: ['1','2','3','4']
         }
       ]).then((answers)=>{
-        console.log (answers)
-        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`),[answers.fName, answers.lName, answers.roleId, answers.manID], function (err, results){
-          if (err){
-            console.error(err)
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`,[answers.fName, answers.lName, answers.roleId, answers.manID], function (err, results){
+          if (err) throw err;
+          if (results.affectedRows>0){
+            console.log(`${answers.fName} was successfully added`);
+            showDb();
           } else {
-            console.log (results + 'employee added successfully');
+            console.log("No changes were made to the database");
             showDb();
           }
-        }
+        })
         
       }).catch((err)=>{
         console.error(err);
