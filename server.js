@@ -63,8 +63,43 @@ console.log(choice)
       });
       break;
     case 'Add an Employee':
-      console.log('Added an employee');
-      showDb();
+      inq.prompt([
+        {
+          type: 'input',
+          name: 'fName',
+          message: 'what is the employees first name?'
+        },
+        {
+          type: 'input',
+          name: 'lName',
+          message: 'what is the employees last name?'
+        },
+        {
+          type: 'list',
+          name: 'roleId',
+          message: 'what is the employees role ID?',
+          choices: ['101','201','301','401']
+        },
+        {
+          type: 'list',
+          name: 'manID',
+          message: 'what is the manager ID of the new employee?',
+          choices: ['1','2','3','4']
+        }
+      ]).then((answers)=>{
+        console.log (answers)
+        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`),[answers.fName, answers.lName, answers.roleId, answers.manID], function (err, results){
+          if (err){
+            console.error(err)
+          } else {
+            console.log (results + 'employee added successfully');
+            showDb();
+          }
+        }
+        
+      }).catch((err)=>{
+        console.error(err);
+      })
       break;
     case 'Update Employee Role':
       console.log('Updated employee role');
