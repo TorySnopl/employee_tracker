@@ -111,7 +111,7 @@ console.log(choice)
       })
       break;
 
-    case 'Update Employee Role': //Working here
+    case 'Update Employee Role': 
       inq.prompt([
         {
           type: 'input',
