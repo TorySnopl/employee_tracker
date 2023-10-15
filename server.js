@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const inq = require('inquirer');
 const mysql = require('mysql2');
+const cFont = require('cfonts');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -34,7 +35,13 @@ db.connect((err) => {
     }
   });
 
-
+cFont.say("Employee|Tracker",{
+  font: 'block',
+  align: 'left',
+  letterSpacing: 0.90,
+  background: 'transparent',
+  env: 'node'
+})
 
   async function showDb() {
   const userChoice = await inq.prompt([
@@ -117,7 +124,7 @@ console.log(choice)
           message: 'What is the new Role ID for the employee?'
         }
       ]).then((answers)=>{
-        db.query(`UPDATE employee SET role_id = ${answers.newRoleId} WHERE id = ${answers.eID})`, function (err, results){
+        db.query(`UPDATE employee SET role_id = ${answers.newRoleId} WHERE id = ${answers.eID}`, function (err, results){
           if (err) throw err;
           if (results.affectedRows>0){
             console.log(`${answers.eID} role was successfully updated`);
