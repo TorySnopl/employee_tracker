@@ -65,7 +65,7 @@ console.log(choice)
   switch (choice) {
     case 'View All Employees':
       db.query('SELECT * FROM employee', function(err,results){
-      console.log (results);
+      console.table (results);
         showDb();
       });
       break;
@@ -141,7 +141,7 @@ console.log(choice)
 
     case 'View all Roles':
       db.query('SELECT * FROM job', function(err,results){
-        console.log(results);
+        console.table(results);
         showDb()
       });
       break;
@@ -183,7 +183,7 @@ console.log(choice)
     
     case 'View all Departments':
       db.query('SELECT * FROM department', function(err,results){
-        console.log(results);
+        console.table(results);
         showDb()
       });
       break;
