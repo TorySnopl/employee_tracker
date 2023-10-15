@@ -117,8 +117,16 @@ console.log(choice)
           message: 'What is the new Role ID for the employee?'
         }
       ]).then((answers)=>{
-        console.log(answers);
-        showDb();
+        db.query(`UPDATE employee SET role_id = ${answers.newRoleId} WHERE id = ${answers.eID})`, function (err, results){
+          if (err) throw err;
+          if (results.affectedRows>0){
+            console.log(`${answers.eID} role was successfully updated`);
+            showDb();
+          } else {
+            console.log("No changes were made to the database");
+            showDb();
+          }
+        })
       }).catch((err)=>{
         console.error(err);
       });
