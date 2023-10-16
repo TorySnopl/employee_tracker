@@ -1,3 +1,5 @@
+--test queries before coding into server.js file--
+
 SELECT *
 FROM employee;
 
