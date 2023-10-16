@@ -44,7 +44,7 @@ Overall, I think I would really like to work with databases and MYSQL in the fut
 ## Deployed Application
 [Github Repo](https://github.com/TorySnopl/employee_tracker)
 
-[Video Demonstration]()
+[Video Demonstration](https://drive.google.com/file/d/1wmrIX8YkMUnLXdHiIbSChBahHB8OU3l9/view)
 
 ## Source Code
 There was no source code provided from the UofO bootcamp. I did take advantage of the following NPM's: MYSQL, Inquirer, Express, and cfonts. Thanks also to the awesome staff at askBCS. 
