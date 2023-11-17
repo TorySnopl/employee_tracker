@@ -35,6 +35,7 @@ db.connect((err) => {
     }
   });
 
+//cfonts NPM to create opening graphic
 cFont.say("Employee|Tracker",{
   font: 'block',
   align: 'left',
@@ -43,6 +44,7 @@ cFont.say("Employee|Tracker",{
   env: 'node'
 })
 
+// showDB Function to run appropriate query based on inq input
   async function showDb() {
   const userChoice = await inq.prompt([
     {
@@ -56,6 +58,7 @@ cFont.say("Employee|Tracker",{
         'Add Role',
         'View all Departments',
         'Add Department',
+        'Exit'
       ],
       name: 'choice',
     },
@@ -112,11 +115,23 @@ console.log(choice)
       break;
 
     case 'Update Employee Role': 
+
+    db.query(`SELECT id, first_name, last_name FROM employee`, function (err,results){
+      if (err) throw err;
+
+      if (results.length>0) {
+        const employeeChoice = results.map(employee => ({
+          name: `${employee.first_name} ${employee.last_name}`,
+          value: employee.id
+        }));
+      
+    
       inq.prompt([
         {
-          type: 'input',
-          name: 'eID',
-          message: 'What is the ID of the employee you would you like to update?'
+          type: 'list',
+          name: 'employeeId',
+          message: 'Choose an employee you would you like to update',
+          choices: employeeChoice
         },
         {
           type: 'input',
@@ -124,10 +139,10 @@ console.log(choice)
           message: 'What is the new Role ID for the employee?'
         }
       ]).then((answers)=>{
-        db.query(`UPDATE employee SET role_id = ${answers.newRoleId} WHERE id = ${answers.eID}`, function (err, results){
+        db.query(`UPDATE employee SET role_id = ? WHERE id = ?`,[answers.newRoleId, answers.employeeId], function (err, updateResults){
           if (err) throw err;
-          if (results.affectedRows>0){
-            console.log(`${answers.eID} role was successfully updated`);
+          if (updateResults.affectedRows>0){
+            console.log(`${answers.first_name} role was successfully updated with new ID: ${answers.newRoleId}`);
             showDb();
           } else {
             console.log("No changes were made to the database");
@@ -137,6 +152,9 @@ console.log(choice)
       }).catch((err)=>{
         console.error(err);
       });
+    
+    }
+  });
       break;
 
     case 'View all Roles':
@@ -211,11 +229,21 @@ console.log(choice)
         console.error(err);
       })
       break;
+
+      case 'Exit':
+        console.log("Exiting the program, Goodbye!");
+        process.exit();
+        
+
+        default:
+          console.log('Invalid choice. Please choose a valid option.');
+          showDb();
+          break;
+          
   }
+})
 
-  
-});
+}
 
-  }
-
-showDb();
+//initiates showDB function
+showDb()
